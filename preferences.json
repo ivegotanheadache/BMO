@@ -1,0 +1,13 @@
+{
+    "default":"openai",
+    "mistral":{
+        "up":100,
+        "down":500
+    },
+    "openai":{
+        "up":500,
+        "down":100,
+        "maxtokens":5000,
+        "maxtokens_per_session":1000
+    }
+}

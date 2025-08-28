@@ -1,0 +1,8 @@
+numpy==2.3.2
+openai==1.100.2
+python-dotenv==1.1.1
+Requests==2.32.5
+scikit_learn==1.7.1
+sentence_transformers==5.1.0
+sseclient==0.0.27
+tiktoken==0.11.0

@@ -1,0 +1,47 @@
+#neither that one
+# Esempi per diary.txt
+
+Il formato dovrebbe essere: `DATA, contenuto del diario` separato da `[page]`
+
+```
+2026-01-15, oggi ho iniziato un nuovo corso di cucina italiana. Abbiamo imparato a fare la pasta fresca e ho conosciuto altre persone interessanti. La chef era molto brava e paziente.
+
+[page]
+
+2026-02-03, giornata difficile al lavoro, troppo stress. Sono andato a correre nel parco per rilassarmi. Ho corso per 5 km e mi sono sentito molto meglio. La corsa mi aiuta sempre a schiarirmi le idee.
+
+[page]
+
+2026-02-20, ho finalmente provato quel ristorante giapponese di cui tutti parlavano. Il sushi era incredibile, soprattutto il salmone. Ci sono andato con Marco e abbiamo passato una bella serata.
+
+[page]
+
+2026-03-14, joined a yoga class today. It was my first time doing yoga and I found it really relaxing. The instructor was very patient with beginners like me. I think I'll continue going twice a week.
+
+[page]
+
+2026-03-25, ho iniziato a imparare a nuotare! Prima lezione in piscina oggi. L'istruttore mi ha insegnato le basi del galleggiamento e della respirazione. È più difficile di quanto pensassi ma sono determinato a imparare.
+
+[page]
+
+2026-04-10, seconda lezione di nuoto. Oggi ho imparato lo stile libero base. Sono riuscito a nuotare per 25 metri senza fermarmi! Sono molto orgoglioso del progresso. L'acqua non mi fa più paura come prima.
+
+[page]
+
+2026-04-22, weekend fantastico in montagna con gli amici. Abbiamo fatto trekking per 3 ore e il panorama era spettacolare. La sera abbiamo acceso un falò e cantato canzoni con la chitarra di Luca.
+
+[page]
+
+2026-05-05, ho completato il mio primo allenamento completo in piscina! 500 metri di nuoto continuo. Quando ho iniziato a marzo non riuscivo nemmeno a stare a galla. Adesso mi sento come un pesce nell'acqua.
+
+[page]
+
+2026-05-18, cena di compleanno della mamma. Tutta la famiglia riunita, abbiamo mangiato la sua famosa lasagna e una torta al cioccolato fatta in casa. Serata piena di risate e ricordi.
+
+[page]
+
+2026-06-02, ho iniziato a leggere "Il nome della rosa" di Umberto Eco. È un libro complesso ma affascinante. Lo sto leggendo ogni sera prima di dormire. Mi piacciono i romanzi storici medievali.
+
+[page]
+
+2026-06-20, primo giorno di vacanze estive!
