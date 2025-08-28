@@ -1,6 +1,6 @@
 ##SI tratta della classe generica per interagire con varie api, succcessivamente 
 #se volessi integrare altri moduli, immagini o cose cosi lo faccio direttamente qui
-#@ivegotanheadache - Annachiara Gargiulo :))
+
 
 import time
 
