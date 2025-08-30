@@ -16,7 +16,7 @@ SetLogLevel(0)
 
 
 BASEPATH = Path(__file__).parent 
-with open(f"{BASEPATH}/config.json" "r", encoding="utf-8") as f:
+with open(f"{BASEPATH}/config.json", "r", encoding="utf-8") as f:
     conf_file = json.load(f)
     
 MODELPATH = conf_file["paths"]["PIPERPATH_MODEL"] #path to piper voice, without ".gguf" at the end 
