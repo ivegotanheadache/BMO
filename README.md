@@ -56,6 +56,7 @@
     <li><code>source venv/bin/activate</code></li>
     <li><code>pip install -r requirements.txt</code></li>
     <li>Modify <code>config.json</code> with the paths of your Vosk model, Piper model, and (if set) the URL of your local Mistral API server</li>
+   <li><code>python3 main.py</code></li>
 </ol>
 
 </body>
