@@ -4,7 +4,8 @@
 
 <body>
   
-<h1>BMO Project - Rpi-Voice-Assistant</h1>
+<h1>Rpi-Voice-Assistant</h1>
+<h2>BMO project</h2>
 
 <p>Rpi-voice-assistant is part of my BMO project.</p>
 <p>I literally want to build BMO.</p>
