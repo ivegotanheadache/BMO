@@ -9,7 +9,7 @@
 
 <p>Rpi-voice-assistant is part of my BMO project.</p>
 <p>I literally want to build BMO.</p>
-  <br>What is it BMO? <br>
+  <br>What is BMO? <br>
 <strong>-->He’s BMO.</strong></p>
 
 <img src="https://media4.giphy.com/media/v1.Y2lkPTZjMDliOTUyNTUwczA1YWZvem94em9ncjdrMGZyZXFuZWlyYzh6a2Q4aWh6OGpkMSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/10bxTLrpJNS0PC/giphy.gif" alt="bmo" width="500">
