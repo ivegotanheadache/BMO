@@ -8,14 +8,20 @@ import queue
 import sys
 from vosk import Model, KaldiRecognizer, SetLogLevel
 from chatbot import ChatBot
-
+from pathlib import Path
 SetLogLevel(0)
 
+############################################
 # Paths
-BASEPATH = os.path.dirname(os.path.abspath(__file__))
-MODELPATH = "" #path to piper voice
-CONFIGPATH = "" #path to json piper
-VOSKMODEL = ""#path - name of vosk model
+
+
+BASEPATH = Path(__file__).parent 
+with open(f"{BASEPATH}/config.json" "r", encoding="utf-8") as f:
+    conf_file = json.load(f)
+    
+MODELPATH = conf_file["paths"]["PIPERPATH_MODEL"] #path to piper voice, without ".gguf" at the end 
+CONFIGPATH = conf_file["paths"]["PIPERPATH_CONFIG"]  #path to json piper
+VOSKMODEL = conf_file["paths"]["VOSKPATH"] #path - name of vosk model
 file_path = f"{BASEPATH}/interact/cache.txt"
 
 # Audio
@@ -74,13 +80,10 @@ def speak(bot: ChatBot, prompt: str):
             "-r", "23050",
             "-c", "1"
         ]
-
-        # Run Piper and pipe to aplay
         piper_proc = subprocess.Popen(piper_cmd, stdout=subprocess.PIPE)
         sox_proc = subprocess.Popen(sox_cmd, stdin=piper_proc.stdout, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
         aplay_proc = subprocess.Popen(aplay_cmd, stdin=sox_proc.stdout)
 
-        # Close Piper's stdout after connecting the pipe to Sox to avoid deadlock
         piper_proc.stdout.close()
         sox_proc.stdout.close() 
         aplay_proc.communicate() 

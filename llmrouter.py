@@ -7,7 +7,7 @@ enc = tiktoken.encoding_for_model("gpt-4")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-file_path = os.path.join(BASE_DIR, "preferences.json")
+file_path = os.path.join(BASE_DIR, "config.json")
 
 with open(file_path, "r", encoding="utf-8") as f:
     prefs = json.load(f)
@@ -24,7 +24,7 @@ ordered = {
 
 def get_llm(sel_by_token=False, prompt=""):
     if not sel_by_token:
-        # Fallback normale con ordine di preferenza
+     
         for key, creator in ordered.items():
             try:
                 print(f"[+] Trying {key}...",ordered.items(),creator.is_up())
@@ -37,16 +37,16 @@ def get_llm(sel_by_token=False, prompt=""):
                 print(f"[+] Falling back to next handler...")
             continue  # Importante: continua al prossimo handler
         
-        # Se arriviamo qui, nessun handler ha funzionato
+      
         raise RuntimeError("Couldn't start any handler - all failed")
         return None
-    
+    # la funzione viene chiamata per scegliere il server in base ai token OpenAI disponibili
     elif sel_by_token and prompt != "":
         tkns = len(enc.encode(prompt))
         low = prefs["openai"]["down"]
         high = prefs["openai"]["up"]
         
-        # Se i token sono nel range OpenAI, prova prima OpenAI
+       
         if low <= tkns <= high and "openai" in handlers:
             print(f"[+] Tokens {tkns} in OpenAI range ({low}-{high}), trying OpenAI first")
             try:

@@ -1,9 +1,4 @@
-##SI tratta della classe generica per interagire con varie api, succcessivamente 
-#se volessi integrare altri moduli, immagini o cose cosi lo faccio direttamente qui
-
-
 import time
-
 
 class BaseMod:
     
@@ -60,16 +55,15 @@ import requests
 import json
 import httpx
 from httpx_sse import connect_sse
-#IMPORT LOGGING?
+from pathlib import Path
 
+config_path = Path(__file__).parent.parent / 'config.json'
+with open(config_path, 'r', encoding='utf-8') as f:
+    config = json.load(f)
 
-
-
-
-##Spostare tuuto come modulo su rpi4 e usare l'apiserver unicamente come API dell'llm pure
 class MistralMod(BaseMod):
     
-    LOCALURL = #LOCALURL TO MISTRAL 
+    LOCALURL = config["mistral"]["local_url"]
     
    
     default_params = {

@@ -1,6 +1,7 @@
 {
     "default":"openai",
     "mistral":{
+        "local_url":"http://192.168.x.x:9999",
         "up":100,
         "down":500
     },
@@ -9,5 +10,10 @@
         "down":100,
         "maxtokens":5000,
         "maxtokens_per_session":1000
+    },
+    "paths":{
+        "VOSKPATH":"",
+        "PIPERPATH_MODEL":"",
+        "PIPERPATH_CONFIG":""
     }
 }
