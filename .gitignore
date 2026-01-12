@@ -1,0 +1,17 @@
+venv/
+.venv/
+env/
+*.env
+*.log
+
+#Files to add with LFS
+*.bin
+*.param
+
+#Other
+.vscode/
+frame.jpg
+__pycache__/
+/speak.py
+/s.py
+

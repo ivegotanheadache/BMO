@@ -40,6 +40,7 @@ def get_llm(sel_by_token=False, prompt=""):
       
         raise RuntimeError("Couldn't start any handler - all failed")
         return None
+    
     # la funzione viene chiamata per scegliere il server in base ai token OpenAI disponibili
     elif sel_by_token and prompt != "":
         tkns = len(enc.encode(prompt))

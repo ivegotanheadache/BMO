@@ -1,4 +1,9 @@
+##SI tratta della classe generica per interagire con varie api, succcessivamente 
+#se volessi integrare altri moduli, immagini o cose cosi lo faccio direttamente qui
+#@ivegotanheadache - Annachiara Gargiulo :))
+
 import time
+
 
 class BaseMod:
     
@@ -55,15 +60,16 @@ import requests
 import json
 import httpx
 from httpx_sse import connect_sse
-from pathlib import Path
+#IMPORT LOGGING?
 
-config_path = Path(__file__).parent.parent / 'config.json'
-with open(config_path, 'r', encoding='utf-8') as f:
-    config = json.load(f)
 
+
+
+
+##Spostare tuuto come modulo su rpi4 e usare l'apiserver unicamente come API dell'llm pure
 class MistralMod(BaseMod):
     
-    LOCALURL = config["mistral"]["local_url"]
+    LOCALURL = "http://localhost:9999"
     
    
     default_params = {
@@ -115,7 +121,7 @@ class MistralMod(BaseMod):
         r = requests.post(f"{self.LOCALURL}/llm/chat/completions",json=payload)
         print(r.json())
         #print(c, r["choices"][0]["text"] +'\n')
-        return r["choices"][0]["text"] +'\n'
+        return r.json()["choices"][0]["text"] +'\n'
         
         
     
@@ -136,8 +142,6 @@ class MistralMod(BaseMod):
         
     
         full_message = ""
-        bibi=""
-        
         response = requests.post(
         url, 
         json={'config': full_config}, 
@@ -147,31 +151,28 @@ class MistralMod(BaseMod):
         )
         response.raise_for_status()
         
-        for line in response.iter_lines(decode_unicode=True):
-            if line.startswith('data: '):
-                data = line[6:]  # Rimuovi 'data: '
-                
-                if data.strip() in ['[DONE]', 'DONE']:
-                    break
+        try:
+            for line in response.iter_lines(decode_unicode=True):
+                if line.startswith('data: '):
+                    data = line[6:]  # Rimuovi 'data: '
                     
-                if data.strip():  # Skip righe vuote
-                    try:
-                        event_data = json.loads(data)
-                        cont= event_data['content']
-                        print(cont, end="", flush=True)
-                        full_message+=cont
-                        bibi+=cont
-                        if ("."  in cont) or ("?" in cont) or ("!" in cont):
-                            yield bibi
-                            bibi = " "
-                        time.sleep(0.1)
-                    except Exception as e:
-                        print(str(e))
-        yield bibi
-        print()
-        chat.append({"role": "assistant", "content": full_message})
-        response.close()
-        return full_message
+                    if data.strip() in ['[DONE]', 'DONE']:
+                        break
+                        
+                    if data.strip():  # Skip righe vuote
+                        try:
+                            event_data = json.loads(data)
+                            cont= event_data['content']
+                            print(cont, end="", flush=True)
+                            full_message+=cont
+                            # Processa i tuoi dati qui
+                        except json.JSONDecodeError:
+                            print(f"Non-JSON data: {data}")
+        finally:
+            print()
+            chat.append({"role": "assistant", "content": full_message})
+            response.close()
+            return full_message
         
             
       
@@ -231,6 +232,15 @@ class OpenAImod(BaseMod):
         "stop": ["\n\n"]
     }
 
+    chatbot_params = {
+        "personality": "",
+        "chat_instructions": "",
+        "action_instructions": "",
+    }
+
+    
+
+    
 
     def __init__(self):
         super().__init__()
@@ -246,16 +256,15 @@ class OpenAImod(BaseMod):
         chat_content = chat_as_string
         recap_prompt = f"I'll give you a chat. Make a brief summary of max 50 words, tell me ONLY and strictly ehat they are talking about and use ONLY descriptive talking like if you are describing a scenario:\n'{chat_content}'"
 
-        response = self.client.completions.create(
+        response = self.client.chat.completions.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content":  recap_prompt}
+                {"role": "system", "content": recap_prompt}
             ],
             max_tokens=100,
             temperature=0.8,
         )
-
-        return response["choices"][0]["message"]["content"].strip()
+        return response.choices[0].message.content.strip()
 
    
 
@@ -294,7 +303,7 @@ class OpenAImod(BaseMod):
                     bibi += content
                     #print(content, (True if "." in content else False))
                     print(content, end="", flush=True) 
-                    if ("."  in content) or ("?" in content) or ("!" in content) or (":" in content):
+                    if ("."  in content) or ("?" in content) or ("!" in content) or ("\n" in content):
                         yield bibi
                         bibi = " "
                         

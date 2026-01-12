@@ -1,0 +1,18 @@
+description: Ultralytics YOLO11n model trained on /kaggle/working/yolo_dataset/dataset.yaml
+author: Ultralytics
+date: '2025-12-31T11:28:02.861179'
+version: 8.3.241
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 320
+- 320
+names:
+  0: face
+args:
+  batch: 1
+  half: true
+channels: 3

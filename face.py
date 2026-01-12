@@ -27,9 +27,7 @@ parent = tk.Tk()
 parent.geometry(format_size)
 parent.title("Avatar Animation")
 
-
-#face images
-#emotions
+# load emotions images
 for file in os.listdir(faces_path):
     if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
         percorso = os.path.join(faces_path, file)
@@ -46,12 +44,10 @@ for file in os.listdir(phonemes_path):
         img = img.resize((1000, 700))
         img_photoimage = ImageTk.PhotoImage(img)
         img_phonemes[file] = img_photoimage
-
+        
 image_label = tk.Label(parent)
 image_label.pack()
 
-
-############Functions###########àà
 def talking():
     for name in img_phonemes.keys():
         image_label.configure(image=img_phonemes[name])
@@ -71,7 +67,7 @@ def listening():
         image_label.configure(image=img_faces["happy.png"])
         parent.update()
     
-
+# Main loop
 def main_loop():
     try:
         if is_audio_playing():
@@ -83,8 +79,10 @@ def main_loop():
 
     except Exception as e:
         print(f"Error in main loop: {e}")
-        parent.after(50, main_loop)
+        parent.after(50, main_loop)  
 
-###################################
+# Start the main loop
 main_loop()
+
+# Start Tkinter event loop
 parent.mainloop()
