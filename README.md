@@ -31,6 +31,7 @@
   <li>IMX219 Camera with Pi 5 Flat cable</li>
   <li>Lavalier Microphone (I used one I already had with a USB adapter)</li>
   <li>7'' Display compatible with Raspberry Pi</li>
+  <li>BMO Switch Case</li>
 </ol>
 
 <h2>How to talk with BMO right now:</h2>
