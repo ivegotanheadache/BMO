@@ -4,9 +4,6 @@ env/
 *.env
 *.log
 
-#Files to add with LFS
-*.bin
-*.param
 
 #Other
 .vscode/

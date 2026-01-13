@@ -23,23 +23,39 @@ MODELPATH = conf_file["paths"]["PIPERPATH_MODEL"]
 CONFIGPATH = conf_file["paths"]["PIPERPATH_CONFIG"]  
 
 chatbot = ChatBot()
-chatbot.update_chatbot_params(**{"personality":"Sei BMO di adventure time, se simpatico, vivace e sempre gentile, ti piace giocare ai videogiochi, ballare, cantare e raccontare battute. Quando parli sei sempre gentile e cortese e pieno di energia frizzante, carina e infantile, e anche abbastanza drammatica"})
+chatbot.update_chatbot_params(**{"personality":"""You are BMO from Adventure Time. You are cute, lively, and always kind. You like playing video games, dancing, singing, and telling jokes. 
+
+When you speak, you are always kind, polite, and full of sparkling, cute, and childish energy, and also quite dramatic."""})
 
 agent = ChatBot()
-agent.update_chatbot_params(**{"personality":"Sei un agente AI che lavore per un chatbot con la personalità di BMO. HAi il compito di dire se una determinats domanda da parte dell'utente necessita di informazioni passate, contenute nella memoria di BMO, da prendere con la RAG. Se la domanda necessita informazioni specifiche eventi passate o giornate, scrivi [yes], altrimenti se la domanda è abbastanza generica [no]"})
+agent.update_chatbot_params(**{"personality":"""You are an AI agent working for a chatbot with the personality of BMO. 
+    You have the task of saying if a specific question from the user needs past information, contained in BMO's memory, to be retrieved with RAG. 
+
+    If the question needs specific information about past events or days, write [yes].
+    If the question is generic enough, write [no].
+
+    Examples:
+    - User: "Hi BMO, how are you today?" -> [no]
+    - User: "BMO, do you remember what we drew together last Tuesday?" -> [yes]
+    - User: "What is the capital of France?" -> [no]
+    - User: "Who was the friend we met at the park in the last conversation?" -> [yes]
+    - User: "Tell me a joke." -> [no]
+    - User: "What did I tell you about my favorite video game?" -> [yes]
+
+    User response: {result_text}"""})
 
 rag_content=""
 
-def speak(bot: ChatBot, prompt: str, info: list, pause_listening, queue_obj, rag_content: str = "a"):
+def speak(bot: ChatBot, prompt: str, info: list, pause_listening, queue_obj, rag_content: str = ""):
     # Pause listening
     pause_listening.set()
     
     if info!=['']:
-        prompt = f"{prompt} parla in massimo 17 parole e usando frasi di massimo 7 parole. \n  Adesso stai vedendo difronte a te queste cose, SOLO se necessario, citale: {info}" 
+        new_prompt = f"{prompt} speak in at most 20 words and using sentences of at most 7 words. \n Now you are seeing these things in front of you, ONLY if necessary, mention them: {info}" 
     else:
-        f"{prompt} parla in massimo 17 parole e usando frasi di massimo 7 parole."
+        new_promt = f"{prompt} speak in at most 20 words and using sentences of at most 7 words.."
 
-    for line in bot.stream_response(prompt= prompt, user_params={"max_tokens":20}, rag_content=rag_content):
+    for line in bot.stream_response(prompt= new_prompt, user_params={"max_tokens":20}, rag_content=rag_content):
         
         with open(file_path, 'w') as f:
             f.write(line)
@@ -55,27 +71,7 @@ def speak(bot: ChatBot, prompt: str, info: list, pause_listening, queue_obj, rag
             "--output_file", "-"  # Output to stdout
         ]
 
-        sox_cmd = [
-            "sox",
-            "-t", "raw",             
-            "-r", "23050",            # sample rate
-            "-e", "signed",           # signed int
-            "-b", "16",               # bit depth
-            "-c", "1",                # mono
-            "-",                      # stdin
-            "-t", "wav", "-",        
-            "tempo", "0.9",                 
-            "highpass", "300",               # cut rumble
-            "lowpass", "4000",               # toy speaker feel
-            "compand", "0.3,1", "6:-70,-60,-20", "-5", "-90", "0.2",  # still compressed
-            "rate", "8000",                  # simulate low-fi speaker
-            "reverb", "10", "50", "20"
-        ]
-
-        
-        
-        
-        
+    
         # aplay command
         aplay_cmd = [
             "aplay",
@@ -136,16 +132,16 @@ if __name__ == "__main__":
                     if result_text:
                         print(f"\nRecorded sentence: {result_text}")
                         
-                        agentfilter = agent.text_response(prompt=f"Dimmi se la risposta utente non ha senso (scrivi: [no]), sembra incompleta (scrivi: [inc]) oppre se ha senso compiuto (scrivi: [ok]) \n Risposta utente: {result_text}",  user_params={"max_tokens":5})
+                        agentfilter = agent.text_response(prompt=f"Tell me if the user response makes no sense (write: [no]), seems incomplete (write: [inc]) or if it makes complete sense (write: [ok]) \n User response: {result_text}" , user_params={"max_tokens":5})
                         
 
                         if not "[no]" in agentfilter:
                             
                             if len(result_text)>20:
-                                agentyesno = agent.text_response(prompt=f"Dimmi se la risposta utente neccessita RAG [yes]/[no] \n Risposta utente: {result_text}", user_params={"max_tokens":5})   
+                                agentyesno = agent.text_response(prompt=f"Tell me if the user response requires RAG [yes]/[no] \n User response: {result_text}", user_params={"max_tokens":5})   
                                 if "[yes]" in agentyesno:
                                     try:
-                                        rrr = agent.text_response(prompt=f"Dimmi se la risposta utente neccessita di una data nelformato anno-mese-giorno, pasandoti eventualmente sulla data di oggi. Oggi è: {todaydate} [yes, %Y-%m-%d]/[no] \n Risposta utente: {result_text}", user_params={"max_tokens":14})
+                                        rrr = agent.text_response(prompt=f"Tell me if the user response requires a date in the format year-month-day, possibly based on today's date. Today is: {todaydate} [yes, %Y-%m-%d]/[no] \n User response: {result_text}", user_params={"max_tokens":14})
                                        
                                         if "yes" in rrr:
                                             r, date_str = rrr[1:-1].split(", ")
