@@ -11,7 +11,7 @@
 <p>I found an old project for an RPi 3 and thought it would be cool to rebuild it from scratch on an RPi 5. And here we are. It can recognize simple objects and talk to you.</p>
 <p>I am also working on facial and voice recognition, as well as letting him play games with you.</p>
 
-<h2>RPI-VOICE-ASSISTANT</h2>
+<h2>RPI Voice assistant with OpenAI/Mistral</h2>
 
 <p>The strength of Rpi-voice-assistant is that it can use both <strong>OpenAI</strong> and <strong>Mistral</strong> (and other APIs in the future), with automatic fallback and easy switching between them.</p>
 
