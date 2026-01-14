@@ -1,6 +1,6 @@
 import json
 import queue
-import threading  # AGGIUNGI QUESTO
+import threading 
 import sys
 import time
 import os
