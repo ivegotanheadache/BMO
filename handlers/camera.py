@@ -19,10 +19,10 @@ def capture_frame():
         '--nopreview'
     ], capture_output=True, check=False)
     
-    # Aspetta che il file sia scritto
+
     time.sleep(0.2)
     
-    # Verifica che il file esista prima di leggerlo
+ 
     if os.path.exists(framepath):
         frame = cv2.imread(framepath)
         return frame
@@ -30,7 +30,7 @@ def capture_frame():
     return None
 
 def run_video(queue):
-    # IMPORTANTE: Carica il modello DENTRO la funzione per multiprocessing
+    #
     try:
         model_objects = YOLO(f"{BASEPATH}/video/yolo11n_object365_ncnn_model")
         print("Modello YOLO caricato")
@@ -38,7 +38,7 @@ def run_video(queue):
         print(f"Errore caricamento modello: {e}")
         return
     
-    old_results = []  # FUORI dal loop!
+    old_results = []  
     
     while True:
         try:
