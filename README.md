@@ -21,7 +21,7 @@
     <li><strong>With <code>BaseHandler</code>:</strong> It’s easy to extend to other APIs and use it as a generic LLM class. Beyond just a chatbot, it’s simple to build multi-purpose agents.</li>
 </ul>
 
-<p>I know, the name might not be original, but, I mean, I'm building BMO so what other name should I use?.</p>
+<p>I know, the name might not be original, but, I mean, I'm building BMO so what other name should I use?</p>
 
 <h2>Hardware</h2>
 <ol>
