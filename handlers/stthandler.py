@@ -1,6 +1,6 @@
 import json
 import queue
-import threading  # AGGIUNGI QUESTO
+import threading 
 import sys
 import time
 import os
@@ -10,7 +10,7 @@ from vosk import Model, KaldiRecognizer, SpkModel
 from sklearn.metrics.pairwise import cosine_similarity
 from pathlib import Path
 
-# --- CONFIGURAZIONE ---
+# configuration
 BASEPATH = Path(__file__).parent.parent 
 CONFIG_FILE = BASEPATH / "config.json"
 
@@ -22,7 +22,7 @@ SPK_MODEL_PATH = str(BASEPATH / "stt" / "vosk-model-spk-0.4")
 VOICES_FILE = str(BASEPATH / "stt" / "known_voices.json")
 CONFIDENCE_THRESHOLD = 0.5 
 
-# --- VARIABILI GLOBALI PER IL CALLBACK ---
+# ---CALLBACK ---
 internal_audio_buffer = queue.Queue()  # QUESTA RESTA queue.Queue (threading)
 global_pause_event = None 
 
@@ -40,12 +40,12 @@ def callback(indata, frames, time_info, status):
     if status:
         print(status)
     
-    # Se NON siamo in pausa, registriamo
+    
     if not global_pause_event.is_set():
         internal_audio_buffer.put(bytes(indata))
         
 
-# --- FUNZIONE PRINCIPALE ---
+
 def run_stt(main_output_queue, pause_event):
     import os
     pid = os.getpid()
@@ -54,7 +54,7 @@ def run_stt(main_output_queue, pause_event):
     global global_pause_event
     global_pause_event = pause_event
     
-    # Carichiamo i modelli dentro il processo
+
     try:
         model = Model(MODEL_PATH)
         spk_model = SpkModel(SPK_MODEL_PATH)
@@ -70,12 +70,12 @@ def run_stt(main_output_queue, pause_event):
     
     with sd.RawInputStream(samplerate=samplerate, blocksize=8000, channels=1, dtype='int16', callback=callback):
         while True:
-            # Gestione Pausa: svuota buffer e attendi
+            
             if pause_event.is_set():
                 time.sleep(0.1)
                 continue
             
-            # Preleva audio dalla coda interna
+            
             try:
                 data = internal_audio_buffer.get()
             except queue.Empty:
@@ -111,7 +111,7 @@ def run_stt(main_output_queue, pause_event):
                             packet["voice"] = best_voice
                             packet["confidence"] = float(best_score)
                     
-                    # INVIA AL MAIN (Coda Esterna - multiprocessing.Queue)
+                    #coda esterna- multiprocessing.Queue)
                     try:
                         main_output_queue.put(packet)
                     except Exception as e:
