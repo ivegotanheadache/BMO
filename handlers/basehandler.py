@@ -59,17 +59,21 @@ class BaseMod:
 import requests
 import json
 import httpx
+from pathlib import Path
 from httpx_sse import connect_sse
-#IMPORT LOGGING?
+
+BASEPATH = Path(__file__).parent.parent 
+CONFIG_FILE = BASEPATH / "config.json"
+
+with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+    conf_file = json.load(f)
+
+localurl = conf_file["mistral"]["local_url"]
 
 
-
-
-
-##Spostare tuuto come modulo su rpi4 e usare l'apiserver unicamente come API dell'llm pure
 class MistralMod(BaseMod):
     
-    LOCALURL = "http://localhost:9999"
+    LOCALURL = localurl
     
    
     default_params = {
@@ -85,7 +89,7 @@ class MistralMod(BaseMod):
     def is_up(cls):
         try:
             response = requests.get(f"{cls.LOCALURL}/")
-            return response.ok  # True if status_code is 200-399
+            return response.ok 
         except requests.RequestException:
             return False
     
@@ -130,10 +134,9 @@ class MistralMod(BaseMod):
     def stream_response(self, chat: dict, prompt: str, user_params: dict = {}):
         
         chat.append({"role": "user", "content": prompt}) 
-
-        # Prepare configuration
+        full_message = ""
+        
         full_config = {"messages": chat, **self.default_params, **user_params}
-
         headers = {
             'Accept': 'text/event-stream',
             'Content-Type': 'application/json'
@@ -141,33 +144,58 @@ class MistralMod(BaseMod):
         url = F"{self.LOCALURL}/generate/text/stream"
         
     
-        full_message = ""
-        response = requests.post(
-        url, 
-        json={'config': full_config}, 
-        headers=headers, 
-        stream=True,
-        timeout=10.0
-        )
-        response.raise_for_status()
+        
+        
         
         try:
+            response = requests.post(
+                url, 
+                json={'config': full_config}, 
+                headers=headers, 
+                stream=True,
+                timeout=30.0
+            )
+            response.raise_for_status()
+            
+            sentence= ""
+            
             for line in response.iter_lines(decode_unicode=True):
-                if line.startswith('data: '):
-                    data = line[6:]  # Rimuovi 'data: '
-                    
-                    if data.strip() in ['[DONE]', 'DONE']:
-                        break
+                if not line or not line.strip():
+                    continue
+
+                packet = json.loads(line)
+                print("[DEBUG] packet:")
+                print(packet["type"])
+
+                if packet["type"]=="chunk":
+                    content = packet.get("content")
+                    if content:
+                        print(content, end="", flush=True)
+                        full_message += content
+                        sentence+=content
+                        print(f"[DEBUG] sentence {sentence}, content {content}, full_message {full_message}")
                         
-                    if data.strip():  # Skip righe vuote
-                        try:
-                            event_data = json.loads(data)
-                            cont= event_data['content']
-                            print(cont, end="", flush=True)
-                            full_message+=cont
-                            # Processa i tuoi dati qui
-                        except json.JSONDecodeError:
-                            print(f"Non-JSON data: {data}")
+                        if ("."  in content) or ("?" in content) or ("!" in content) or ("\n" in content):
+                            yield sentence
+                            sentence = ""
+                if packet["type"]=="complete":
+                    if sentence.strip():
+                        yield sentence
+                    break
+            
+            chat.append({"role": "assistant", "content": full_message})
+            return full_message
+        
+        except requests.exceptions.Timeout:
+            print("[ERROR in stream] Request timeout")
+            raise
+        except requests.exceptions.RequestException as e:
+            print(f"[ERROR in stream] Request failed: {e}")
+            raise
+        except Exception as e:
+            print(f"[ERROR in stream] Unexpected error: {e}")
+            raise
+    
         finally:
             print()
             chat.append({"role": "assistant", "content": full_message})
@@ -295,7 +323,7 @@ class OpenAImod(BaseMod):
                 **{**self.default_params, **user_params}
             )
             
-            bibi = ""
+            bibi = "" #sentence buffer
             for chunk in response:
                 content = chunk.choices[0].delta.content
                 if content:
@@ -306,9 +334,6 @@ class OpenAImod(BaseMod):
                     if ("."  in content) or ("?" in content) or ("!" in content) or ("\n" in content):
                         yield bibi
                         bibi = " "
-                        
-                    
-                    time.sleep(0.1)
             yield bibi      
             chat.append({"role": "assistant", "content": message})
             

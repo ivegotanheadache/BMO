@@ -131,16 +131,12 @@ async def generate_text_stream(request: GenerateTextRequest):
                         "content": content,
                         "full_message": message
                     }
-                    yield f"data: {json.dumps(chunk_data)}\n\n"
-            
-            # Send completion signal
-            completion_data = {"type": "complete", "content": "", "full_message": message}
-            yield f"data: {json.dumps(completion_data)}\n\n"
+                    yield f"{json.dumps(chunk_data)}\n\n"
             
         except Exception as e:
             logger.error(f"Streaming error: {e}")
             error_data = {"type": "error", "content": str(e)}
-            yield f"data: {json.dumps(error_data)}\n\n"
+            yield f"{json.dumps(error_data)}\n\n"
     
     return StreamingResponse(
         event_stream(),

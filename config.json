@@ -1,7 +1,7 @@
 {
-    "default":"openai",
+    "default":"mistral",
     "mistral":{
-        "local_url":"http://172.20.10.7:9999",
+        "local_url":"http://192.168.1.55:9999",
         "up":100,
         "down":500
     },
@@ -12,9 +12,9 @@
         "maxtokens_per_session":1000
     },
     "paths":{
-        "VOSKPATH":"",
-        "PIPERPATH_MODEL":"",
-        "PIPERPATH_CONFIG":""
+        "VOSKPATH":"/home/rpi/Desktop/PIstacchio/stt/vosk-model-small-en-us-0.15",
+        "PIPERPATH_MODEL":"/home/rpi/Desktop/models/en_GB-semaine-medium/a",
+        "PIPERPATH_CONFIG":"/home/rpi/Desktop/models/en_GB-semaine-medium/a.json"
         
     }
 }
