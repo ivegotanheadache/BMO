@@ -66,6 +66,16 @@
 </ol>
 
 <h3>For other languages:</h3>
-<p>I'm working on adding all prompts to <code>config.json</code> to make them easier to translate. In the meantime, you can install the Vosk model for your language and add it to <code>config.json</code>.</p>
+
+<p>For now, I've just added english, italian and spanish select <b>"en"</b> or <b>"it"</b>" or <b>"sp"</b> in the <code>config.json file</code></p>
+<p>If you want to help by adding yourlanguage, you can find the prompts in /memories/whoami.yaml<p>
+<p>I'm working on adding all languages to <code>whoami.yaml</code></p>
+<p> The vosk model is english so you will hear BMO with british accent, that I found has voice very pretty similar the the BMO's one so i find it pretty cute, but obviusly you can install whatever voice you want</p>
+
+<h2>Project's structure</h2>
+
+<p>
+  <img src="./images/diagramma.jpeg" alt="Diagramma di Flusso" width="600">
+</p>
 
 </body>
