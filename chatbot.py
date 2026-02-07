@@ -82,7 +82,7 @@ class ChatBot:
 
     def add_rag_content(self, content):
         self.chat.append({
-            "role": "assistant",
+            "role": "system",
             "content": f"here is some additional content to retrieve information:\n{content}"
         })
         print(self.chat)
