@@ -164,8 +164,6 @@ class MistralMod(BaseMod):
                     continue
 
                 packet = json.loads(line)
-                print("[DEBUG] packet:")
-                print(packet["type"])
 
                 if packet["type"]=="chunk":
                     content = packet.get("content")
@@ -173,7 +171,6 @@ class MistralMod(BaseMod):
                         print(content, end="", flush=True)
                         full_message += content
                         sentence+=content
-                        print(f"[DEBUG] sentence {sentence}, content {content}, full_message {full_message}")
                         
                         if ("."  in content) or ("?" in content) or ("!" in content) or ("\n" in content):
                             yield sentence
@@ -184,7 +181,6 @@ class MistralMod(BaseMod):
                     break
             
             chat.append({"role": "assistant", "content": full_message})
-            return full_message
         
         except requests.exceptions.Timeout:
             print("[ERROR in stream] Request timeout")
@@ -200,7 +196,6 @@ class MistralMod(BaseMod):
             print()
             chat.append({"role": "assistant", "content": full_message})
             response.close()
-            return full_message
         
             
       
@@ -336,8 +331,6 @@ class OpenAImod(BaseMod):
                         bibi = " "
             yield bibi      
             chat.append({"role": "assistant", "content": message})
-            
-            return message
 
         except Exception as e:
             print(str(e))
