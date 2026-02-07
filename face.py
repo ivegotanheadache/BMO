@@ -1,4 +1,4 @@
-import psutil
+import json
 import time
 import tkinter as tk
 import os
@@ -7,8 +7,19 @@ from pathlib import Path
 import random
 from PIL import Image, ImageTk
 
-faces_path = str(Path(__file__).parent) + "/images/faces"
-phonemes_path = str(Path(__file__).parent) + "/images/phonemes"
+
+BASEPATH = Path(__file__).parent
+
+with open(f"{BASEPATH}/config.json", "r", encoding="utf-8") as f:
+    conf_file = json.load(f)
+ 
+colors = ["green", "pink"]
+
+color = conf_file["face_color"] if conf_file["face_color"] in colors else "green" #IF YOU ENTER A NOT VALID COLOR, SET  GREEN AS DEFAULT
+image_path = BASEPATH / "images" / color    
+
+faces_path = image_path / "faces"
+phonemes_path = image_path / "phonemes"
 
 def is_audio_playing():
     output = subprocess.check_output(["pw-cli", "ls", "Node"], text=True)
