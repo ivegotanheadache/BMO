@@ -18,8 +18,8 @@ colors = ["green", "pink"]
 color = conf_file["face_color"] if conf_file["face_color"] in colors else "green" #IF YOU ENTER A NOT VALID COLOR, SET  GREEN AS DEFAULT
 image_path = BASEPATH / "images" / color    
 
-faces_path = image_path / "faces"
-phonemes_path = image_path / "phonemes"
+faces_path = image_path / "faces" 
+phonemes_path = image_path / "phonemes" 
 
 def is_audio_playing():
     output = subprocess.check_output(["pw-cli", "ls", "Node"], text=True)
@@ -68,21 +68,22 @@ def talking():
 
 def listening():
     #UPDATE CONTROLLED EMOTIONS WITH ACTIONS!
+    print(f"************************++\n\n\nUFACE.PY : {faces_path}")
     r = random.randint(1,500)
     
     if r==1:
-        image_label.configure(image=img_faces["annoyed.png"])
+        image_label.configure(image=img_faces["annoyed.jpeg"])
         parent.update()
         time.sleep(1)
     else:    
-        image_label.configure(image=img_faces["happy.png"])
+        image_label.configure(image=img_faces["happy.jpeg"])
         parent.update()
     
 # Main loop
 def main_loop():
+    print(f"************************++\n\n\nUFACE.PY : {img_faces.keys()}")
     try:
         if is_audio_playing():
-            print("talking")
             talking()
         else:
             listening()
@@ -94,6 +95,7 @@ def main_loop():
 
 # Start the main loop
 main_loop()
+#talking()  # Call the talking function to start the animation
 
 # Start Tkinter event loop
 parent.mainloop()
