@@ -15,6 +15,7 @@
         "VOSKPATH":"/home/rpi/Desktop/PIstacchio/stt/vosk-model-small-en-us-0.15",
         "PIPERPATH_MODEL":"/home/rpi/Desktop/models/en_GB-semaine-medium/a",
         "PIPERPATH_CONFIG":"/home/rpi/Desktop/models/en_GB-semaine-medium/a.json"
-        
-    }
+    },
+    "face_color":"green",
+    "language":"en"
 }
