@@ -177,10 +177,12 @@ class MistralMod(BaseMod):
                             sentence = ""
                 if packet["type"]=="complete":
                     if sentence.strip():
+                        print("Received complete: sentence:", sentence)
                         yield sentence
                     break
             
             chat.append({"role": "assistant", "content": full_message})
+
         
         except requests.exceptions.Timeout:
             print("[ERROR in stream] Request timeout")
@@ -193,7 +195,6 @@ class MistralMod(BaseMod):
             raise
     
         finally:
-            print()
             chat.append({"role": "assistant", "content": full_message})
             response.close()
         

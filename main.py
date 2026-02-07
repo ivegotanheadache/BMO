@@ -165,6 +165,7 @@ if __name__ == "__main__":
 
                         if "[ok]" in agentfilter:
                             last_voice = recognize_speaker(objects_seen, voice_packet, last_voice)
+                            print(f"Speaker recognized as: {last_voice}")
 
                             if len(result_text) > 20:
                                 agentyesno = agent.text_response(prompt=yaml_conf['rag_decision'].format(result_text=result_text), user_params={"max_tokens":5}).lower()
