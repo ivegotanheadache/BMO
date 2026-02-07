@@ -36,13 +36,16 @@ def cosine(prompt):
         print("Not very similar event found")
         
 def extractday(date):
-    d = datetime.strptime(date, "%Y-%m-%d")
     try:
-        return f"Hai traccia del tempo. Per rispondere alla domanda, ecco quello che ricordi di aver fatto: {diary_db[d]}"
-    except:
-        pass    
+        d = datetime.strptime(date, "%Y-%m-%d")
+        if d in diary_db:
+            return f"Hai traccia del tempo. Per rispondere alla domanda, ecco quello che ricordi di aver fatto: {diary_db[d]}"
+        else:
+            return "" 
+    except ValueError:
+        return ""
+    except Exception as e:
+        print(f"Error in extractday: {e}")
+        return ""
 
    
-print("cic")     
-#cosine("Hai mai letto un libro di Umberto Eco?")        
-extractday("2026-01-15")
