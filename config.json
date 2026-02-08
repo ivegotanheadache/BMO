@@ -16,6 +16,6 @@
         "PIPERPATH_MODEL":"/home/rpi/Desktop/models/en_GB-semaine-medium/a",
         "PIPERPATH_CONFIG":"/home/rpi/Desktop/models/en_GB-semaine-medium/a.json"
     },
-    "face_color":"green",
+    "face_color":"pink",
     "language":"en"
 }
